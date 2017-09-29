@@ -1,0 +1,13 @@
+// Cancel a gap between expected margin and actual margin
+// 付けたいマージン($target-margin)と、その結果の実際の見た目上のマージン($actual-margin)の誤差を相殺する
+//
+// Usage:
+// 1. margin-bottom: gap(20px);       <- You want to set 20px margin, but it is as 25px with measuring the actual margin
+// 2. margin-bottom: gap(20px, 25px); <- Set the actual margin to second param, then you'll get an expected result
+
+@function gap($target-margin, $actual-margin:0 ) {
+  @if $actual-margin == 0 {
+    @return $target-margin;
+  }
+  @return $target-margin - ($actual-margin - $target-margin);
+}
