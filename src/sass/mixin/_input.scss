@@ -1,0 +1,44 @@
+// Hide a spin on a number input
+// input[type=number]要素の上下ボタンを隠す
+
+@mixin hide-number-input-spin {
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+// Style input placeholder text for multiple browsers
+// input要素のplaceholderテキストを装飾する
+//
+// Usage:
+//
+// input {
+//   @include placeholder {
+//     color: red;
+//   }
+// }
+
+@mixin placeholder() {
+  // Do not combine selectors below with ','. It won't work.
+  // 下記のセレクタを','でまとめると動作しなくなります
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+
+  &:placeholder-shown {
+    @content;
+  }
+}

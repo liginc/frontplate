@@ -1,0 +1,92 @@
+// Multiline truncation with ellipsis
+// 複数行の省略表記(背景透過非対応)
+
+@mixin line-clamp($line-height, $font-size, $lines, $color, $ellipsis: '...') {
+  line-height: $line-height;
+  height: $font-size * $line-height * $lines + px;
+
+  overflow: hidden;
+  position: relative;
+  word-break: break-all;
+  text-align: justify;
+
+  &::before,
+  &::after {
+    position: absolute;
+  }
+
+  &::before {
+    content: $ellipsis;
+    background: $color;
+    right: 0;
+    text-align: center;
+    width: 1em;
+    top: $font-size * $line-height * ($lines - 1) + px;
+  }
+
+  &::after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: 0;
+    z-index: 2;
+    background: $color;
+  }
+}
+
+// Make a bulleted list indenting at also after 2nd line, which using ::before virtual element
+// カスタムの箇条書きを、2行目以降も綺麗にインデントさせる
+//
+// Usage: https://codepen.io/hokkey/pen/xXrVRL
+
+@mixin bullet-list($bullet-size, $indent-length, $left-offset: 0) {
+  padding-left: $indent-length;
+  text-indent: -$indent-length;
+
+  &::before {
+    content: '';
+    display: inline-block;
+
+    width: $bullet-size;
+    height: $bullet-size;
+    margin-left: $left-offset;
+    margin-right: calc(#{$indent-length - $left-offset} - #{$bullet-size});
+  }
+}
+
+// Convert Photoshop tracking value into em value
+// トラッキング値をem値へ変換する
+
+@function tracking($tracking) {
+  @return $tracking * 0.001 + 0em;
+}
+
+// Apply letter-spacing with tracking value
+// CAUTION: The result won't reproduction Photoshop completely
+// トラッキング値からletter-spacingを適用する
+// 注意：Photoshopの見た目が完全に再現されるわけではありません
+
+@mixin tracking($tracking) {
+  letter-spacing: tracking($tracking);
+}
+
+// Remove units of a value
+// 値から単位を除去
+
+@function strip-units($number) {
+  @return $number/($number * 0 + 1);
+}
+
+@function calc-px-to-rem($px, $base-px: $root-font-size) {
+  @return strip-units($px)/strip-units($base-px) + 0rem;
+}
+
+// Set font-size as a rem value from a px value
+// The second parameter must be equal to :root' font-size
+// ピクセル値からremでfont-sizeをセット
+// 第二引数は:root要素のfont-sizeと一致させてください
+
+@mixin set-rem-font-size($px, $base-px: $root-font-size) {
+  // font-size: $px; // Uncomment to support old browsers
+  font-size: calc-px-to-rem($px, $base-px);
+}

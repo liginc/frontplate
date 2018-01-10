@@ -1,0 +1,13 @@
+// Draw a repeating square grid as background-image
+// background-imageとして正方形の升目パターンを描画する
+//
+// Usage: https://codepen.io/hokkey/pen/dVRGjW
+
+@mixin background-square-mesh($size: 10px, $color:rgba(white, .05)) {
+  background-image: linear-gradient(transparent 95%, $color 5%),
+  linear-gradient(90deg, transparent 95%, $color 5%);
+  background-size: $size $size;
+  background-repeat: repeat;
+  background-position: top center;
+  background-attachment: fixed;
+}
